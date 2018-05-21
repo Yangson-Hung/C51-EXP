@@ -114,9 +114,15 @@ void main()
 void Usart() interrupt 4
 {
     u8 i;
-    u8 recDat = SBUF;                   //接收数据,PC发过来的数据存到SBUF里,单片机从SBUF里取数据
-    RI = 0;                             //清除接收中断标志位
-    for(i = 0; i < 16; i++)
-        if (recDat == num_char[i])      //判断接收的是什么字符
-            P0 = smgduan[num_int[i]];   //接收什么字符就显示字符对应的数字
+    u8 recDat;
+    if (RI == 1)
+    {
+        recDat = SBUF;                   //接收数据,PC发过来的数据存到SBUF里,单片机从SBUF里取数据
+        RI = 0;                             //清除接收中断标志位
+        for(i = 0; i < 16; i++)
+            if (recDat == num_char[i])      //判断接收的是什么字符
+                P0 = smgduan[num_int[i]];   //接收什么字符就显示字符对应的数字
+    }
 }
+
+
